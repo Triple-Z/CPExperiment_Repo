@@ -1,0 +1,3 @@
+exclude=xorg-x11*
+.vscode
+
