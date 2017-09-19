@@ -1,0 +1,8 @@
+program hhh;
+const a:3;
+var hhh;
+begin
+	hhh:=26;
+end
+
+var m, n, r, q;  procedure gcd;  begin  while r<>0 do  begin  q:=m+1m12;q := m / n;  r := m - q * n;  m := n;  n := r;  end;  end;  begin  read(m);  read(n);  if m <n then  begin  r := m;  m := n;  n := r;  end;  begin  r:=1;  call gcd;  write(m); r:m; end;  end

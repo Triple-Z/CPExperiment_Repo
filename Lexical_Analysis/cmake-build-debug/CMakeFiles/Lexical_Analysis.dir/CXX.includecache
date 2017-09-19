@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Lexical_Analysis/LA.cpp
+LA.h
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Lexical_Analysis/LA.h
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Lexical_Analysis/LA.h
+iostream
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Lexical_Analysis/iostream
+fstream
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Lexical_Analysis/fstream
+

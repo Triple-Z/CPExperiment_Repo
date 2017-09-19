@@ -1,0 +1,6 @@
+program hhh;
+const a:=3;
+var hhh;
+begin
+	hhh:=26;
+end
