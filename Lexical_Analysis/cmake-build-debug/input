@@ -1,5 +1,4 @@
-program hhh;
-const a:3;
+program hhh;    const 12a:3;
 var hhh;
 begin
 	hhh:=26;

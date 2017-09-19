@@ -12,6 +12,9 @@ fstream output;
 
 const string key[15] = {"program", "const", "var", "procedure", "begin", "if", "end", "while", "call", "read", "write", "then", "odd", "do"};
 
+int line;
+int column;
+
 /**
  * Verify whether is blank char, 1 is BC, 0 is not.
  * @param ch char
@@ -19,12 +22,31 @@ const string key[15] = {"program", "const", "var", "procedure", "begin", "if", "
  */
 int isBC(char ch){
 	if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n'){
+        switch (ch) {
+            case ' ':
+                column++;
+                break;
+            case '\t':
+                column+=4; // A tab = 4 spaces
+                break;
+            case '\r':
+            case '\n':
+                line++;
+                column = 1;
+                break;
+        }
 		return 1;
 	} else {
 		return 0;
 	}
 }
 
+/**
+ * Add a character to strToken.
+ * @param a strToken
+ * @param ch add charater
+ * @return new strToken string
+ */
 string Concat(string a, char ch) {
 	a.push_back(ch);
 	return a;
@@ -62,27 +84,45 @@ void Retract(){
     }
 }
 
-int main()
-{
-	source.open("input", ios::in); // Read file;
-	output.open("results", ios::out | ios::app); // W
+int main() {
 
-	if (!source.is_open())
-	{
+    string inputFileName;
+
+    cout << "Enter the program file name: ";
+    cin >> inputFileName;
+    cout << endl;
+
+	source.open(inputFileName, ios::in); // Read file
+	output.open("results", ios::out | ios::trunc); // Write file
+    line = 1;
+    column = 1;
+
+	if (!source.is_open()) {
 		cout << "Cannot open the source file!\a" << endl;
 		exit(1);
 	}
-	if (!output.is_open())
-	{
+	if (!output.is_open()) {
 		cout << "Cannot open the output file!\a" << endl;
-	}
+	} else {
+        // Header of the file
 
+        time_t rawtime;
+        struct tm * timeinfo;
+
+        time (&rawtime);
+        timeinfo = localtime (&rawtime);
+
+        output << "Generate Time: " << asctime(timeinfo);
+        output << "Program File Name: " << inputFileName << endl;
+        output << "Language Set: PL/0" << endl;
+        output << endl;
+    }
 
 	string strToken;
 	char ch;
 	while (!source.eof())
 	{
-		ch = source.get();
+        ch = source.get();
 
         if (isBC(ch)){
             strToken = "";
@@ -90,15 +130,18 @@ int main()
 
 			while (isLetter(ch) || isDigit(ch)){
 				strToken = Concat(strToken, ch);
+                column++;
 				ch = source.get();
 			}
 
 
             if (Reserve(strToken)){
-                cout << strToken << ", RESERVED" << endl;
+//                cout << strToken << ", RESERVED" << endl;
+                output << strToken << ", RESERVED" << endl;
             }
 			else{
-                cout << strToken << ", ID" << endl;
+//                cout << strToken << ", ID" << endl;
+                output << strToken << ", ID" << endl;
             }
             strToken = "";
 
@@ -107,43 +150,74 @@ int main()
         } else if (isDigit(ch)){
 			while (isDigit(ch)) {
 				strToken = Concat(strToken, ch);
-				source.get(ch);
+                column++;
+				ch = source.get();
 			}
 
-			Retract();
+            if (isLetter(ch)) {
+                cout << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID" << endl;
+                output << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID" << endl;
 
-			cout << strToken << ", INT" << endl;
+                while (isLetter(ch) || isDigit(ch)){
+                    column++;
+                    ch = source.get();
+                }
+
+            } else {
+//                cout << strToken << ", INT" << endl;
+                output << strToken << ", INT" << endl;
+            }
+
+            Retract();
+            strToken = "";
+
 		} else {
 			switch(ch) {
 				case '=':
-					cout << ch << ", COP" << endl;
+                    column++;
+//					cout << ch << ", COP" << endl;
+                    output << ch << ", COP" << endl;
 					break;
 				case '<':
+                    column++;
 					ch = source.get();
 					if (ch == '>') {
-						cout << "<>, COP" << endl;
+                        column++;
+//						cout << "<>, COP" << endl;
+                        output << "<>, COP" << endl;
 					} else if (ch == '='){
-						cout << "<=, COP" << endl;
+                        column++;
+//						cout << "<=, COP" << endl;
+                        output << "<=, COP" << endl;
 					} else {
-						cout << "<, COP" << endl;
+//						cout << "<, COP" << endl;
+                        output << "<, COP" << endl;
 						Retract();
 					}
 					break;
 				case '>':
+                    column++;
 					ch = source.get();
 					if (ch == '=') {
-						cout << ">=, COP" << endl;
+                        column++;
+//						cout << ">=, COP" << endl;
+                        output << ">=, COP" << endl;
 					} else {
-						cout << ">, COP" << endl;
+//						cout << ">, COP" << endl;
+						output << ">, COP" << endl;
 						Retract();
 					}
 					break;
 				case ':':
+                    column++;
 					ch = source.get();
 					if (ch == '=') {
-						cout << ":=, AOP" << endl;
+                        column++;
+//						cout << ":=, AOP" << endl;
+						output << ":=, AOP" << endl;
 					} else {
-						cout << "[Program ERROR] Missing \"=\" near the \":\" ;" << endl;
+						cout << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
+						output << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
 						Retract();
 					}
 					break;
@@ -151,22 +225,33 @@ int main()
 				case '-':
 				case '*':
 				case '/':
-					cout << ch << ", OOP" << endl;
+                    column++;
+//					cout << ch << ", OOP" << endl;
+					output << ch << ", OOP" << endl;
 					break;
 				case ';':
-					cout << ch << ", EOP" << endl;
+                    column++;
+//					cout << ch << ", EOP" << endl;
+					output << ch << ", EOP" << endl;
 					break;
                 case '(':
                 case ')':
-                    cout << ch << ", POP" << endl;
+                case ',':
+                    column++;
+//                    cout << ch << ", SOP" << endl;
+                    output << ch << ", SOP" << endl;
                     break;
 				default:
-					cout << ch << ", UNKNOWN" << endl;
+                    column++;
+//					cout << ch << ", UNKNOWN" << endl;
+                    output << ch << ", UNKNOWN" << endl;
 			}
 		}
 	}
 
 	source.close();
 	output.close();
+    cout << endl;
+    cout << "Save results successfully" << endl;
 	return 0;
 }
