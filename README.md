@@ -67,4 +67,4 @@
 
 Copyright &copy; 2017 [TripleZ](https://github.com/Triple-Z/)
 
-[MIT License]()
+[MIT License](https://github.com/Triple-Z/CP-Homework/blob/master/LICENSE.md)
