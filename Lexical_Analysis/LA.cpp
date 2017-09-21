@@ -178,13 +178,17 @@ int main() {
 			}
 
             if (isLetter(ch)) {
-                cout << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID" << endl;
-                output << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID" << endl;
+                cout << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
+                output << "[Program ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
 
                 while (isLetter(ch) || isDigit(ch)){
+                    strToken = Concat(strToken, ch);
                     column++;
                     ch = source.get();
                 }
+
+                cout << "\"" << strToken << "\"" << endl;
+                output << "\"" << strToken << "\"" << endl;
 
             } else {
 //                cout << strToken << ", INT" << endl;

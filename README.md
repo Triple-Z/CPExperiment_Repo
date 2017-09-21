@@ -57,7 +57,7 @@
 错误提示。
 
 - 变量名错误：
-	> [Program ERROR] [1,25] Invalid ID
+	> [Program ERROR] [1,25] Invalid ID: "12a"
 - 赋值符号错误：
 	> [Program ERROR] [1,27] Missing "=" near the ":" ;
 
