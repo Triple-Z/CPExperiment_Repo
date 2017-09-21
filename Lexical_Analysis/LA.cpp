@@ -52,6 +52,11 @@ string Concat(string a, char ch) {
 	return a;
 }
 
+/**
+ * Check a character whether is a digit.
+ * @param ch A character
+ * @return 1 is true, 0 is false.
+ */
 int isDigit(char ch) {
 	if (ch >= '0' && ch <= '9'){
 		return 1;
@@ -60,6 +65,11 @@ int isDigit(char ch) {
 	}
 }
 
+/**
+ * Check a character whether is a letter.
+ * @param ch A character
+ * @return 1 is true, 0 is false.
+ */
 int isLetter(char ch){
 	if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')){
 		return 1;
@@ -68,6 +78,11 @@ int isLetter(char ch){
 	}
 }
 
+/**
+ * Check strToken whether is a reserved word.
+ * @param strToken search-forward string.
+ * @return 1 is reserved, 0 is not.
+ */
 int Reserve(string strToken) {
 	int i;
 	for(i = 0; i< 15; i++) {
@@ -78,12 +93,20 @@ int Reserve(string strToken) {
 	return 0;
 }
 
+
+/**
+ * Move the cursor back a character.
+ */
 void Retract(){
     if (!source.eof()){
         source.seekg(-1, ios::cur);
     }
 }
 
+/**
+ * Main function.
+ * @return 0
+ */
 int main() {
 
     string inputFileName;
@@ -104,7 +127,7 @@ int main() {
 	if (!output.is_open()) {
 		cout << "Cannot open the output file!\a" << endl;
 	} else {
-        // Header of the file
+        // Header of the file (DateTime & File name & Lang set)
 
         time_t rawtime;
         struct tm * timeinfo;
@@ -124,18 +147,18 @@ int main() {
 	{
         ch = source.get();
 
-        if (isBC(ch)){
+        if (isBC(ch)){ // Blank character check
             strToken = "";
-        } else if (isLetter(ch)){
+        } else if (isLetter(ch)){ // Letter check
 
-			while (isLetter(ch) || isDigit(ch)){
+			while (isLetter(ch) || isDigit(ch)){ // ID check loop
 				strToken = Concat(strToken, ch);
                 column++;
 				ch = source.get();
 			}
 
 
-            if (Reserve(strToken)){
+            if (Reserve(strToken)){ // Reserved word check
 //                cout << strToken << ", RESERVED" << endl;
                 output << strToken << ", RESERVED" << endl;
             }
@@ -147,7 +170,7 @@ int main() {
 
             Retract();
 
-        } else if (isDigit(ch)){
+        } else if (isDigit(ch)){ // Digit check
 			while (isDigit(ch)) {
 				strToken = Concat(strToken, ch);
                 column++;
@@ -172,7 +195,7 @@ int main() {
             strToken = "";
 
 		} else {
-			switch(ch) {
+			switch(ch) { // Other characters check
 				case '=':
                     column++;
 //					cout << ch << ", COP" << endl;
