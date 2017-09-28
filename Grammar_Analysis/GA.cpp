@@ -3,13 +3,17 @@
  * @date 2017-09-27
  * @brief A simple grammar analysis program written by C++.
  */
+
 #include "GA.h"
 using namespace std;
 
 Unit unit;
-
+int errorStack[100] = {-1};
+int *errorType = errorStack;
+bool error = false;
 fstream gaSource;
 fstream gaOutput;
+
 
 /**
  * Read file line by line.
@@ -17,6 +21,7 @@ fstream gaOutput;
  */
 string line;
 string::iterator itLine;
+
 void ReadLine() {
 // Remember ERROR procedure.
     getline(gaSource, line);
@@ -54,125 +59,41 @@ void ReadLine() {
  * @param type Error type.
  */
 void ThrowError(int type){
+    error = true;
+    *errorType = type;
+    errorType++;
     switch(type){
         case 0:
-            cout << "[Grammar ERROR] Missing word \"program\"" << endl;
+            cout << "[Grammar ERROR]" << " [" << unit.line << "," << unit.column << "] " << "Missing word \"program\"" << endl;
             break;
         case 1:
-            cout << "[Grammar ERROR] Missing identifier after \"program\"" << endl;
+            cout << "[Grammar ERROR]" << " [" << unit.line << "," << unit.column << "] " << "Missing identifier after \"program\"" << endl;
             break;
         case 2:
-            cout << "[Grammar ERROR] Missing end character" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing end character \";\"" << endl;
             break;
         case 3:
-            cout << "[Grammar ERROR] Missing identifier after \"const\"" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing identifier after \"const\"" << endl;
             break;
         case 4:
-            cout << "[Grammar ERROR] Missing assignment operation" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing assignment operation" << endl;
             break;
         case 5:
-            cout << "[Grammar ERROR] Missing assignment integer" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing assignment integer" << endl;
             break;
         case 6:
-            cout << "[Grammar ERROR] Missing identifier after \"var\"" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing identifier after \"var\"" << endl;
             break;
         case 7:
-            cout << "[Grammar ERROR] Missing identifier after \",\"" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing identifier after \",\"" << endl;
+            break;
+        case 8:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Cannot resolve type \"" << unit.value << "\"" << endl;
             break;
         default:
-            cout << "[Grammar ERROR] Unknown error" << endl;
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Unknown error" << endl;
             break;
     }
-}
-
-/**
- * <condecl> → const <const>{,<const>};
- * <const> → <id>:=<integer>
- * <id> → l{l|d}
- * l represent letter.
- */
-void Condecl() {
-    ReadLine();
-    if (unit.key == "ID"){
-        ReadLine();
-        if (unit.value == ":=" && unit.key == "AOP") {
-            ReadLine();
-            if (unit.key == "INT") {
-                ReadLine();
-                while (unit.value == "," && unit.key == "SOP"){
-                    ReadLine();
-                    if (unit.key == "ID"){
-                        ReadLine();
-                        if (unit.value == ":=" && unit.key == "AOP"){
-                            ReadLine();
-                            if (unit.key == "INT") {
-                                ReadLine();
-                            } else {
-                                ThrowError(5); // Missing INT
-                            }
-                        } else {
-                            ThrowError(4); // Missing AOP
-                        }
-                    } else{
-                        ThrowError(3); // Missing id
-                    }
-                }
-                if (unit.value == ";" && unit.key == "EOP") {
-                    // Over.
-                } else {
-                    ThrowError(2); // Missing EOP
-                }
-            } else {
-                ThrowError(5); // Missing INT
-            }
-        } else {
-            ThrowError(4); // Missing AOP
-        }
-    } else{
-        ThrowError(3); // Missing id
-    }
-}
-
-/**
- * <vardecl> → var <id>{,<id>};
- * <id> → l{l|d}
- * l represent letter.
- */
-void Vardecl() {
-    ReadLine();
-    if (unit.key == "ID") {
-        ReadLine();
-        while (unit.value == ",", unit.key == "SOP") {
-            ReadLine();
-            if (unit.key == "ID") {
-                ReadLine();
-            } else {
-                ThrowError(7);// Missing ID
-            }
-        }
-        if (unit.value == ";" && unit.key == "EOP") {
-            // Over.
-        } else {
-            ThrowError(2); // Missing EOP
-        }
-    } else {
-        ThrowError(6); // Missing ID
-    }
-}
-
-/**
- * <proc> → procedure <id>（<id>{,<id>}）;<block>{;<proc>}
- */
-void Proc() {
-
-}
-
-
-/**
- * <body> → begin <statement>{;<statement>}end
- */
-void Body() {
-
 }
 
 /**
@@ -194,6 +115,7 @@ void Statement() {
 void Lexp() {
 
 }
+
 
 /**
  * <exp> → [+|-]<term>{<aop><term>}
@@ -217,24 +139,161 @@ void Factor() {
 }
 
 /**
+ * <body> → begin <statement>{;<statement>}end
+ */
+void Body() {
+
+}
+
+/**
+ * <proc> → procedure <id>（<id>{,<id>}）;<block>{;<proc>}
+ */
+void Proc() {
+    ReadLine();
+    if(unit.key == "ID") {
+
+    } else {
+
+    }
+}
+
+/**
+ * <vardecl> → var <id>{,<id>};
+ * <id> → l{l|d}
+ * l represent letter.
+ */
+void Vardecl() {
+    ReadLine();
+    if (unit.key == "ID") {
+        ReadLine();
+        while (unit.value == ",", unit.key == "SOP") {
+            ReadLine();
+            if (unit.key == "ID") {
+                ReadLine();
+            } else {
+                ThrowError(7);// Missing ID
+            }
+        }
+        if (unit.value == ";" && unit.key == "EOP") {
+            ReadLine();
+            // Finish var declaration.
+        } else {
+            ThrowError(2); // Missing EOP
+        }
+    } else {
+        ThrowError(6); // Missing ID
+    }
+}
+
+/**
+ * Const variables declaration.
+ * <condecl> → const <const>{,<const>};
+ * <const> → <id>:=<integer>
+ * <id> → l{l|d}
+ * l represent letter.
+ */
+void Condecl() {
+    ReadLine();
+    if (unit.key == "ID" || *errorType == 3){
+        if(unit.key != "ID") errorType++;
+        ReadLine();
+        if (unit.value == ":=" && unit.key == "AOP"|| *errorType == 4) {
+            if(!(unit.value == ":=" && unit.key == "AOP")) errorType++;
+            ReadLine();
+            if (unit.key == "INT"|| *errorType == 5) {
+                if(unit.key != "INT") errorType++;
+                ReadLine();
+                while (unit.value == "," && unit.key == "SOP"){
+
+                    ReadLine();
+                    if (unit.key == "ID"|| *errorType == 3){
+                        if(unit.key != "ID") errorType++;
+                        ReadLine();
+                        if (unit.value == ":=" && unit.key == "AOP"|| *errorType == 4){
+                            if(!(unit.value == ":=" && unit.key == "AOP")) errorType++;
+                            ReadLine();
+                            if (unit.key == "INT"|| *errorType == 5) {
+                                if(unit.key != "INT") errorType++;
+                                ReadLine();
+                            } else {
+                                ThrowError(5); // Missing INT
+                            }
+                        } else {
+                            ThrowError(4); // Missing AOP
+                        }
+                    } else{
+                        ThrowError(3); // Missing id
+                    }
+                    if(error) break;
+                }
+                if (unit.value == ";" && unit.key == "EOP"|| *errorType == 2 || error) {
+                    if(!(unit.value == ";" && unit.key == "EOP")) errorType++;
+                    ReadLine();
+                    // Finish const declaration.
+                } else {
+                    ThrowError(2); // Missing EOP
+                }
+            } else {
+                ThrowError(5); // Missing INT
+            }
+        } else {
+            ThrowError(4); // Missing AOP
+        }
+    } else{
+        ThrowError(3); // Missing id
+    }
+}
+
+
+
+
+/**
  * <block> → [<condecl>][<vardecl>][<proc>]<body>
  */
 void Block() {
     ReadLine();
+
     if (unit.value == "const" && unit.key == "RESERVED") {
         Condecl();
+    } else if (*errorType == 8) {
+        errorType++;
+        ReadLine();
+    } else if (unit.key == "ID" && *errorType != 8){
+        ThrowError(8); // Cannot resolve type
+        while(unit.key != "EOP" && unit.key != "RESERVED"){
+            ReadLine();
+        }
+        ReadLine();
     }
+
     if (unit.value == "var" && unit.key == "RESERVED") {
         Vardecl();
+    } else if (*errorType == 8) {
+        errorType++;
+        ReadLine();
+    } else if (unit.key == "ID" && *errorType != 8){
+        ThrowError(8); // Cannot resolve type
+        while(unit.key != "EOP" && unit.key != "RESERVED"){
+            ReadLine();
+        }
+        ReadLine();
     }
+
     if (unit.value == "procedure" && unit.key == "RESERVED") {
         Proc();
+    } else if (*errorType == 8) {
+        errorType++;
+        ReadLine();
+    } else if (unit.key == "ID" && *errorType != 8){
+        ThrowError(8); // Cannot resolve type
+        while(unit.key != "EOP" && unit.key != "RESERVED"){
+            ReadLine();
+        }
+        ReadLine();
     }
 
     Body();
 }
-
-
 
 
 /**
@@ -242,11 +301,15 @@ void Block() {
  */
 void Prog() {
     ReadLine();
-    if (unit.value == "program" && unit.key == "RESERVED"){
+    if ((unit.value == "program" && unit.key == "RESERVED") || *errorType == 0){
+        if (*errorType == 0) errorType++;
+
         ReadLine();
-        if (unit.key == "ID") {
+        if (unit.key == "ID" || *errorType == 1) {
+            if (*errorType == 1) errorType++;
             ReadLine();
-            if (unit.value == ";" && unit.key == "EOP") {
+            if ((unit.value == ";" && unit.key == "EOP") || *errorType == 2) {
+                if (*errorType == 2) errorType++;
                 Block();
             } else {
                 ThrowError(2);
@@ -257,6 +320,7 @@ void Prog() {
     } else {
         ThrowError(0);
     }
+
 }
 
 
@@ -286,6 +350,11 @@ void OpenFile() {
     }
 }
 
+void CloseFile() {
+    gaSource.close();
+    gaOutput.close();
+}
+
 /**
  * Grammar analysis main program
  * @return
@@ -294,5 +363,13 @@ int GA() {
 
     OpenFile();
     Prog();
+    CloseFile();
+    while(error){
+        error = false;
+        errorType = errorStack;
+        OpenFile();
+        Prog();
+        CloseFile();
+    }
     return 0;
 }

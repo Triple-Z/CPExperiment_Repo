@@ -1,23 +1,42 @@
 # Lexical Analysis Result
-# Generate Time: Fri Sep 29 00:28:17 2017
+# Generate Time: Fri Sep 29 02:43:55 2017
 # Program File Name: input
 # Language Set: PL/0
 
-program RESERVED 1 8
-hhh ID 1 12
-; EOP 1 13
+progam ID 1 7
+hhh ID 1 11
+; EOP 1 12
 const RESERVED 2 10
 er ID 2 13
-^ := AOP 2 14
-[Lexical ERROR] [2,14] Missing "=" near the ":" ;
-3 INT 2 15
-; EOP 2 16
-var RESERVED 3 8
-hhh ID 3 12
-; EOP 3 13
-begin RESERVED 4 10
-hhh ID 5 12
-:= AOP 5 14
-26 INT 5 16
-; EOP 5 17
-end RESERVED 6 8
+:= AOP 2 15
+3 INT 2 16
+, SOP 2 17
+te ID 2 20
+:= AOP 2 22
+a ID 2 23
+, SOP 2 24
+tt ID 2 27
+:= AOP 2 29
+3 INT 2 30
+; EOP 2 31
+vr ID 3 7
+hhh ID 3 11
+; EOP 3 12
+procedure RESERVED 4 14
+test ID 4 19
+( SOP 4 20
+tt ID 4 22
+) SOP 4 23
+; EOP 4 24
+begin RESERVED 5 10
+er ID 6 11
+:= AOP 6 13
+2 INT 6 14
+; EOP 6 15
+end RESERVED 7 8
+begin RESERVED 8 6
+aaa ID 9 8
+:= AOP 9 10
+26 INT 9 12
+; EOP 9 13
+end RESERVED 10 4

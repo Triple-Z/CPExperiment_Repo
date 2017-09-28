@@ -1,6 +1,10 @@
-program hhh;
-    const er:3;
-    var hhh;
+progam hhh;
+    const er:=3, te:=a, tt:=3;
+    vr hhh;
+    procedure test(tt);
     begin
-        hhh:=26;
+        er:=2;
     end
+begin
+    aaa:=26;
+end
