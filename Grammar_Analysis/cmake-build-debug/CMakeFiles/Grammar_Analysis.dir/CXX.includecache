@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/GA.cpp
+GA.h
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/GA.h
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/GA.h
+iostream
+-
+ctime
+-
+fstream
+-
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/LA.cpp
+LA.h
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/LA.h
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/LA.h
+iostream
+-
+ctime
+-
+fstream
+-
+
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/main.cpp
+iostream
+-
+

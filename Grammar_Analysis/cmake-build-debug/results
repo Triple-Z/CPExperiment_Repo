@@ -1,0 +1,21 @@
+Generate Time: Thu Sep 28 20:29:06 2017
+Program File Name: input
+Language Set: PL/0
+
+program  RESERVED
+hhh  ID
+;  EOP
+const  RESERVED
+er  ID
+[Lexical ERROR] [2,14] Missing "=" near the ":" ;
+3  INT
+;  EOP
+var  RESERVED
+hhh  ID
+;  EOP
+begin  RESERVED
+hhh  ID
+:=  AOP
+26  INT
+;  EOP
+end  RESERVED

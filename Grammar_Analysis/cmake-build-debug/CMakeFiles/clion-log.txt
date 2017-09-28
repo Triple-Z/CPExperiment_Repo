@@ -1,0 +1,4 @@
+/opt/clion-2017.2.1/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/cmake-build-debug

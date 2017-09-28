@@ -1,0 +1,3 @@
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/cmake-build-debug/CMakeFiles/edit_cache.dir
+/run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/cmake-build-debug/CMakeFiles/Grammar_Analysis.dir

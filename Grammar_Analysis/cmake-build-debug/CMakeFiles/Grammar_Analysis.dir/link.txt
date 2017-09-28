@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Grammar_Analysis.dir/main.cpp.o CMakeFiles/Grammar_Analysis.dir/GA.cpp.o CMakeFiles/Grammar_Analysis.dir/LA.cpp.o  -o Grammar_Analysis 

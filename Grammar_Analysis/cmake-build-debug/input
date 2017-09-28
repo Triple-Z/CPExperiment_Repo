@@ -1,0 +1,6 @@
+program hhh;
+    const er:3;
+    var hhh;
+    begin
+        hhh:=26;
+    end
