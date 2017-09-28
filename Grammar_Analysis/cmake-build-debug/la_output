@@ -1,0 +1,23 @@
+# Lexical Analysis Result
+# Generate Time: Fri Sep 29 00:28:17 2017
+# Program File Name: input
+# Language Set: PL/0
+
+program RESERVED 1 8
+hhh ID 1 12
+; EOP 1 13
+const RESERVED 2 10
+er ID 2 13
+^ := AOP 2 14
+[Lexical ERROR] [2,14] Missing "=" near the ":" ;
+3 INT 2 15
+; EOP 2 16
+var RESERVED 3 8
+hhh ID 3 12
+; EOP 3 13
+begin RESERVED 4 10
+hhh ID 5 12
+:= AOP 5 14
+26 INT 5 16
+; EOP 5 17
+end RESERVED 6 8

@@ -6,22 +6,47 @@
 #include "GA.h"
 using namespace std;
 
-string value;
-string key;
+Unit unit;
 
-fstream source;
-fstream output;
+fstream gaSource;
+fstream gaOutput;
 
 /**
  * Read file line by line.
- * @return Global variables: value & key.
+ * @return Global variables: unit.value & unit.key.
  */
 string line;
+string::iterator itLine;
 void ReadLine() {
 // Remember ERROR procedure.
-    getline(source, line);
+    getline(gaSource, line);
+//    cout << line << endl;
+    itLine = line.begin();
+    while (*itLine == '#' || line.empty()) {// Jump annotations & empty lines
+        getline(gaSource, line);
+//        cout << line << endl;
+        itLine = line.begin();
+    }
 
+    istringstream iss(line);
 
+    if (*itLine == '^'){ // Lexical error
+        char ch;
+        iss >> ch; // '^'
+        iss >> unit.value;
+        iss >> unit.key;
+        iss >> unit.line;
+        iss >> unit.column;
+//        unit.print();
+        getline(gaSource, line);
+        cout << line << endl;
+    } else { // No lexical error
+        iss >> unit.value;
+        iss >> unit.key;
+        iss >> unit.line;
+        iss >> unit.column;
+//        unit.print();
+    }
 }
 
 /**
@@ -61,46 +86,6 @@ void ThrowError(int type){
 }
 
 /**
- * <prog> → program <id>; <block>
- */
-void Prog() {
-    ReadLine();
-    if (value == "program" && key == "RESERVED"){
-        ReadLine();
-        if (key == "ID") {
-            ReadLine();
-            if (value == ";" && key == "EOP") {
-                Block();
-            } else {
-                ThrowError(2);
-            }
-        } else {
-            ThrowError(1);
-        }
-    } else {
-        ThrowError(0);
-    }
-}
-
-/**
- * <block> → [<condecl>][<vardecl>][<proc>]<body>
- */
-void Block() {
-    ReadLine();
-    if (value == "const" && key == "RESERVED") {
-        Condecl();
-    }
-    if (value == "var" && key == "RESERVED") {
-        Vardecl();
-    }
-    if (value == "procedure" && key == "RESERVED") {
-        Proc();
-    }
-
-    Body();
-}
-
-/**
  * <condecl> → const <const>{,<const>};
  * <const> → <id>:=<integer>
  * <id> → l{l|d}
@@ -108,19 +93,19 @@ void Block() {
  */
 void Condecl() {
     ReadLine();
-    if (key == "ID"){
+    if (unit.key == "ID"){
         ReadLine();
-        if (value == ":=" && key == "AOP"){
+        if (unit.value == ":=" && unit.key == "AOP") {
             ReadLine();
-            if (key == "INT") {
+            if (unit.key == "INT") {
                 ReadLine();
-                while (value == "," && key == "SOP"){
+                while (unit.value == "," && unit.key == "SOP"){
                     ReadLine();
-                    if (key == "ID"){
+                    if (unit.key == "ID"){
                         ReadLine();
-                        if (value == ":=" && key == "AOP"){
+                        if (unit.value == ":=" && unit.key == "AOP"){
                             ReadLine();
-                            if (key == "INT") {
+                            if (unit.key == "INT") {
                                 ReadLine();
                             } else {
                                 ThrowError(5); // Missing INT
@@ -132,7 +117,7 @@ void Condecl() {
                         ThrowError(3); // Missing id
                     }
                 }
-                if (value == ";" && key == "EOP") {
+                if (unit.value == ";" && unit.key == "EOP") {
                     // Over.
                 } else {
                     ThrowError(2); // Missing EOP
@@ -148,7 +133,6 @@ void Condecl() {
     }
 }
 
-
 /**
  * <vardecl> → var <id>{,<id>};
  * <id> → l{l|d}
@@ -156,17 +140,17 @@ void Condecl() {
  */
 void Vardecl() {
     ReadLine();
-    if (key == "ID") {
+    if (unit.key == "ID") {
         ReadLine();
-        while (value == ",", key == "SOP") {
+        while (unit.value == ",", unit.key == "SOP") {
             ReadLine();
-            if (key == "ID") {
+            if (unit.key == "ID") {
                 ReadLine();
             } else {
                 ThrowError(7);// Missing ID
             }
         }
-        if (value == ";" && key == "EOP") {
+        if (unit.value == ";" && unit.key == "EOP") {
             // Over.
         } else {
             ThrowError(2); // Missing EOP
@@ -182,6 +166,7 @@ void Vardecl() {
 void Proc() {
 
 }
+
 
 /**
  * <body> → begin <statement>{;<statement>}end
@@ -232,53 +217,59 @@ void Factor() {
 }
 
 /**
- * <lop> → =|<>|<|<=|>|>=
+ * <block> → [<condecl>][<vardecl>][<proc>]<body>
  */
-void Lop() {
+void Block() {
+    ReadLine();
+    if (unit.value == "const" && unit.key == "RESERVED") {
+        Condecl();
+    }
+    if (unit.value == "var" && unit.key == "RESERVED") {
+        Vardecl();
+    }
+    if (unit.value == "procedure" && unit.key == "RESERVED") {
+        Proc();
+    }
 
+    Body();
 }
 
-/**
- * <aop> → +|-
- */
-void Aop() {
 
-}
+
 
 /**
- * <mop> → *|/
+ * <prog> → program <id>; <block>
  */
-void Mop() {
-
-}
-
-/**
- * <id> → l{l|d}
- * l represent letter.
- */
-void Id() {
-
-}
-
-/**
- * <integer> → d{d}
- * d represent digit.
- */
-void Int() {
-
+void Prog() {
+    ReadLine();
+    if (unit.value == "program" && unit.key == "RESERVED"){
+        ReadLine();
+        if (unit.key == "ID") {
+            ReadLine();
+            if (unit.value == ";" && unit.key == "EOP") {
+                Block();
+            } else {
+                ThrowError(2);
+            }
+        } else {
+            ThrowError(1);
+        }
+    } else {
+        ThrowError(0);
+    }
 }
 
 
 void OpenFile() {
-    source.open("la_output", ios::in); // Read file
-    output.open("ga_output", ios::out | ios::trunc); // Write file
+    gaSource.open("la_output", ios::in); // Read file
+    gaOutput.open("ga_output", ios::out | ios::trunc); // Write file
 
-    if (!source.is_open()) {
-        cout << "Cannot open the source file!\a" << endl;
+    if (!gaSource.is_open()) {
+        cout << "Cannot open the gaSource file!\a" << endl;
         exit(1);
     }
-    if (!output.is_open()) {
-        cout << "Cannot open the output file!\a" << endl;
+    if (!gaOutput.is_open()) {
+        cout << "Cannot open the gaOutput file!\a" << endl;
     } else {
         // Header of the file (DateTime & File name & Lang set)
 
@@ -288,10 +279,10 @@ void OpenFile() {
         time (&rawtime);
         timeinfo = localtime (&rawtime);
 
-        output << "# Grammar Analysis Result" << endl;
-        output << "# Generated Time: " << asctime(timeinfo);
-        output << "# Language Set: PL/0" << endl;
-        output << endl;
+        gaOutput << "# Grammar Analysis Result" << endl;
+        gaOutput << "# Generated Time: " << asctime(timeinfo);
+        gaOutput << "# Language Set: PL/0" << endl;
+        gaOutput << endl;
     }
 }
 
@@ -301,7 +292,7 @@ void OpenFile() {
  */
 int GA() {
 
-
+    OpenFile();
     Prog();
     return 0;
 }

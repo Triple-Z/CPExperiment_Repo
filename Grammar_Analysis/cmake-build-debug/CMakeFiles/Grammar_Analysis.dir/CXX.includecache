@@ -17,6 +17,10 @@ ctime
 -
 fstream
 -
+string
+-
+sstream
+-
 
 /run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/LA.cpp
 LA.h
@@ -31,6 +35,4 @@ fstream
 -
 
 /run/media/triplez/Work/Files/Program Files/Compile_Principles/Grammar_Analysis/main.cpp
-iostream
--
 

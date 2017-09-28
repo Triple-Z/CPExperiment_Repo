@@ -7,8 +7,8 @@
 #include "LA.h"
 using namespace std;
 
-fstream source;
-fstream output;
+fstream laSource;
+fstream laOutput;
 
 const string key[15] = {"program", "const", "var", "procedure", "begin", "if", "end", "while", "call", "read", "write", "then", "odd", "do"};
 
@@ -98,8 +98,8 @@ int Reserve(string strToken) {
  * Move the cursor back a character.
  */
 void Retract(){
-    if (!source.eof()){
-        source.seekg(-1, ios::cur);
+    if (!laSource.eof()){
+        laSource.seekg(-1, ios::cur);
     }
 }
 
@@ -115,17 +115,17 @@ int LA() {
     cin >> inputFileName;
     cout << endl;
 
-    source.open(inputFileName, ios::in); // Read file
-    output.open("la_output", ios::out | ios::trunc); // Write file
+    laSource.open(inputFileName, ios::in); // Read file
+    laOutput.open("la_output", ios::out | ios::trunc); // Write file
     line = 1;
     column = 1;
 
-    if (!source.is_open()) {
-        cout << "Cannot open the source file!\a" << endl;
+    if (!laSource.is_open()) {
+        cout << "Cannot open the laSource file!\a" << endl;
         exit(1);
     }
-    if (!output.is_open()) {
-        cout << "Cannot open the output file!\a" << endl;
+    if (!laOutput.is_open()) {
+        cout << "Cannot open the laOutput file!\a" << endl;
     } else {
         // Header of the file (DateTime & File name & Lang set)
 
@@ -135,18 +135,18 @@ int LA() {
         time (&rawtime);
         timeinfo = localtime (&rawtime);
 
-        output << "# Lexical Analysis Result" << endl;
-        output << "# Generate Time: " << asctime(timeinfo);
-        output << "# Program File Name: " << inputFileName << endl;
-        output << "# Language Set: PL/0" << endl;
-        output << endl;
+        laOutput << "# Lexical Analysis Result" << endl;
+        laOutput << "# Generate Time: " << asctime(timeinfo);
+        laOutput << "# Program File Name: " << inputFileName << endl;
+        laOutput << "# Language Set: PL/0" << endl;
+        laOutput << endl;
     }
 
     string strToken;
     char ch;
-    while (!source.eof())
+    while (!laSource.eof())
     {
-        ch = source.get();
+        ch = laSource.get();
 
         if (isBC(ch)){ // Blank character check
             strToken = "";
@@ -155,17 +155,17 @@ int LA() {
             while (isLetter(ch) || isDigit(ch)){ // ID check loop
                 strToken = Concat(strToken, ch);
                 column++;
-                ch = source.get();
+                ch = laSource.get();
             }
 
 
             if (Reserve(strToken)){ // Reserved word check
 //                cout << strToken << ", RESERVED" << endl;
-                output << strToken << "  RESERVED" << endl;
+                laOutput << strToken << " RESERVED" << " " << line << " " << column << endl;
             }
             else{
 //                cout << strToken << ", ID" << endl;
-                output << strToken << "  ID" << endl;
+                laOutput << strToken << " ID" << " " << line << " " << column << endl;
             }
             strToken = "";
 
@@ -175,25 +175,25 @@ int LA() {
             while (isDigit(ch)) {
                 strToken = Concat(strToken, ch);
                 column++;
-                ch = source.get();
+                ch = laSource.get();
             }
 
             if (isLetter(ch)) {
                 cout << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
-                output << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
+                laOutput << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
 
                 while (isLetter(ch) || isDigit(ch)){
                     strToken = Concat(strToken, ch);
                     column++;
-                    ch = source.get();
+                    ch = laSource.get();
                 }
 
                 cout << "\"" << strToken << "\"" << endl;
-                output << "\"" << strToken << "\"" << endl;
+                laOutput << "\"" << strToken << "\"" << endl;
 
             } else {
 //                cout << strToken << ", INT" << endl;
-                output << strToken << "  INT" << endl;
+                laOutput << strToken << " INT" << " " << line << " " << column << endl;
             }
 
             Retract();
@@ -204,48 +204,49 @@ int LA() {
                 case '=':
                     column++;
 //					cout << ch << ", COP" << endl;
-                    output << ch << "  COP" << endl;
+                    laOutput << ch << " COP" << " " << line << " " << column << endl;
                     break;
                 case '<':
                     column++;
-                    ch = source.get();
+                    ch = laSource.get();
                     if (ch == '>') {
                         column++;
 //						cout << "<>, COP" << endl;
-                        output << "<>  COP" << endl;
+                        laOutput << "<> COP" << " " << line << " " << column << endl;
                     } else if (ch == '='){
                         column++;
 //						cout << "<=, COP" << endl;
-                        output << "<=  COP" << endl;
+                        laOutput << "<= COP" << " " << line << " " << column << endl;
                     } else {
 //						cout << "<, COP" << endl;
-                        output << "<  COP" << endl;
+                        laOutput << "< COP" << " " << line << " " << column << endl;
                         Retract();
                     }
                     break;
                 case '>':
                     column++;
-                    ch = source.get();
+                    ch = laSource.get();
                     if (ch == '=') {
                         column++;
 //						cout << ">=, COP" << endl;
-                        output << ">=  COP" << endl;
+                        laOutput << ">= COP" << " " << line << " " << column << endl;
                     } else {
 //						cout << ">, COP" << endl;
-                        output << ">  COP" << endl;
+                        laOutput << "> COP" << " " << line << " " << column << endl;
                         Retract();
                     }
                     break;
                 case ':':
                     column++;
-                    ch = source.get();
+                    ch = laSource.get();
                     if (ch == '=') {
                         column++;
 //						cout << ":=, AOP" << endl;
-                        output << ":=  AOP" << endl;
+                        laOutput << ":= AOP" << " " << line << " " << column << endl;
                     } else {
                         cout << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
-                        output << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
+                        laOutput << "^ := AOP " << line << " " << column << endl;
+                        laOutput << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
                         Retract();
                     }
                     break;
@@ -255,31 +256,33 @@ int LA() {
                 case '/':
                     column++;
 //					cout << ch << ", OOP" << endl;
-                    output << ch << "  OOP" << endl;
+                    laOutput << ch << " OOP" << " " << line << " " << column << endl;
                     break;
                 case ';':
                     column++;
 //					cout << ch << ", EOP" << endl;
-                    output << ch << "  EOP" << endl;
+                    laOutput << ch << " EOP" << " " << line << " " << column << endl;
                     break;
                 case '(':
                 case ')':
                 case ',':
                     column++;
 //                    cout << ch << ", SOP" << endl;
-                    output << ch << "  SOP" << endl;
+                    laOutput << ch << " SOP" << " " << line << " " << column << endl;
                     break;
                 default:
                     column++;
 //					cout << ch << ", UNKNOWN" << endl;
-                    output << ch << "  UNKNOWN" << endl;
+                    laOutput << ch << " UNKNOWN" << " " << line << " " << column << endl;
             }
         }
     }
 
-    source.close();
-    output.close();
+    laSource.close();
+    laOutput.close();
     cout << endl;
-    cout << "Save results successfully" << endl;
+    cout << "Finish lexical analysis" << endl;
+    cout << "Save lexical analysis results successfully" << endl;
+    cout << endl;
     return 0;
 }

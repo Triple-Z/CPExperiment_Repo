@@ -1,4 +1,4 @@
-#include <iostream>
+
 
 int LA();
 int GA();
@@ -9,7 +9,6 @@ int main () {
 
     // Grammar analysis
     GA();
-
 
     return 0;
 }
