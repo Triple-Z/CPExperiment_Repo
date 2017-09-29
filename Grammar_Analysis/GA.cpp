@@ -90,6 +90,15 @@ void ThrowError(int type){
         case 8:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Cannot resolve type \"" << unit.value << "\"" << endl;
             break;
+        case 9:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing identifier after \"procedure\"" << endl;
+            break;
+        case 10:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing parentheses in \"procedure\"" << endl;
+            break;
+        case 11:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing identifier in \"procedure\"" << endl;
+            break;
         default:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Unknown error" << endl;
             break;
@@ -149,11 +158,59 @@ void Body() {
  * <proc> → procedure <id>（<id>{,<id>}）;<block>{;<proc>}
  */
 void Proc() {
+
+    void Block();
+
     ReadLine();
-    if(unit.key == "ID") {
+    if(unit.key == "ID" || *errorType == 9) {
+        if(*errorType == 9 && unit.key != "ID") errorType++;
+        ReadLine();
+        if (unit.key == "SOP" && unit.value == "(" || *errorType == 10){
+            if (*errorType == 10 && unit.value != "(") errorType++;
+            ReadLine();
+            if (unit.key == "ID" || *errorType == 11) {
+                if (*errorType == 11 && unit.key != "ID") errorType++;
+                ReadLine();
 
+                while (unit.value == "," && unit.key == "SOP"){
+
+                    ReadLine();
+                    if (unit.key == "ID"|| *errorType == 11){
+                        if(unit.key != "ID") errorType++;
+                        ReadLine();
+
+                    } else{
+                        ThrowError(11); // Missing id
+                    }
+                    if(error) break;
+                }
+
+                if (unit.key == "SOP" && unit.value == ")" || *errorType == 10){
+                    if (*errorType == 10 && unit.value != ")") errorType++;
+                    ReadLine();
+
+                    if (unit.key == "EOP" && unit.value == ";" || *errorType == 2) {
+                        if (*errorType == 2 && unit.value != ";") errorType++;
+                        Block();
+
+                        while (unit.key == "EOP" && unit.value == ";") {
+                            Proc();
+                        }
+                    } else {
+                        ThrowError(2);
+                    }
+                } else {
+                    ThrowError(10);
+                }
+
+            } else {
+                ThrowError(11);
+            }
+        } else {
+            ThrowError(10);
+        }
     } else {
-
+        ThrowError(9);
     }
 }
 
@@ -255,11 +312,14 @@ void Block() {
 
     if (unit.value == "const" && unit.key == "RESERVED") {
         Condecl();
-    } else if (*errorType == 8) {
-        errorType++;
-        ReadLine();
     } else if (unit.key == "ID" && *errorType != 8){
         ThrowError(8); // Cannot resolve type
+        while(unit.key != "EOP" && unit.key != "RESERVED"){
+            ReadLine();
+        }
+        ReadLine();
+    } else if (*errorType == 8) {
+        errorType++;
         while(unit.key != "EOP" && unit.key != "RESERVED"){
             ReadLine();
         }
@@ -268,11 +328,14 @@ void Block() {
 
     if (unit.value == "var" && unit.key == "RESERVED") {
         Vardecl();
-    } else if (*errorType == 8) {
-        errorType++;
-        ReadLine();
     } else if (unit.key == "ID" && *errorType != 8){
         ThrowError(8); // Cannot resolve type
+        while(unit.key != "EOP" && unit.key != "RESERVED"){
+            ReadLine();
+        }
+        ReadLine();
+    } else if (*errorType == 8) {
+        errorType++;
         while(unit.key != "EOP" && unit.key != "RESERVED"){
             ReadLine();
         }
@@ -281,11 +344,14 @@ void Block() {
 
     if (unit.value == "procedure" && unit.key == "RESERVED") {
         Proc();
-    } else if (*errorType == 8) {
-        errorType++;
-        ReadLine();
     } else if (unit.key == "ID" && *errorType != 8){
         ThrowError(8); // Cannot resolve type
+        while(unit.key != "EOP" && unit.key != "RESERVED"){
+            ReadLine();
+        }
+        ReadLine();
+    } else if (*errorType == 8) {
+        errorType++;
         while(unit.key != "EOP" && unit.key != "RESERVED"){
             ReadLine();
         }
