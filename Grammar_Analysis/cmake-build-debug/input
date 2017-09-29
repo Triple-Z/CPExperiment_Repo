@@ -1,10 +1,12 @@
 progam hhh;
-    const er:=3, te:=a, tt:=3;
-    vr hhh;
-    procedure test(tt);
+    const 3er:3, te:=a, tt:=3;
+    va hhh;
+    procedure test(ttt, eee);
+    const tt:= 34;
     begin
-        er:=2
+        while c>=d do c:=c-1
     end
 begin
+    if a>b then a:=3;
     aaa:=26
 end

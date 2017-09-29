@@ -179,8 +179,7 @@ int LA() {
             }
 
             if (isLetter(ch)) {
-                cout << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
-                laOutput << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Invalid ID: " ;
+                cout << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Invalid ID: " ;
 
                 while (isLetter(ch) || isDigit(ch)){
                     strToken = Concat(strToken, ch);
@@ -189,6 +188,8 @@ int LA() {
                 }
 
                 cout << "\"" << strToken << "\"" << endl;
+                laOutput << "^ " << strToken << " ID " << line << " " << column << endl;
+                laOutput << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Invalid ID: " ;
                 laOutput << "\"" << strToken << "\"" << endl;
 
             } else {
@@ -244,9 +245,9 @@ int LA() {
 //						cout << ":=, AOP" << endl;
                         laOutput << ":= AOP" << " " << line << " " << column << endl;
                     } else {
-                        cout << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
+                        cout << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
                         laOutput << "^ := AOP " << line << " " << column << endl;
-                        laOutput << "[Lexical ERROR]" << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
+                        laOutput << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
                         Retract();
                     }
                     break;
@@ -280,9 +281,9 @@ int LA() {
 
     laSource.close();
     laOutput.close();
-    cout << endl;
-    cout << "Finish lexical analysis" << endl;
-    cout << "Save lexical analysis results successfully" << endl;
-    cout << endl;
+//    cout << endl;
+//    cout << "Finish lexical analysis" << endl;
+//    cout << "Save lexical analysis results successfully" << endl;
+//    cout << endl;
     return 0;
 }

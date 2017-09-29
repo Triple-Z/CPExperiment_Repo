@@ -16,6 +16,7 @@
 	- [EOP(End Operator)](#eopend-operator)
 	- [SOP(Sperate Operators)](#sopsperate-operators)
 	- [Error Warning](#error-warning-1)
+- [PASCAL语言子集（PL/0）文法](#pascal语言子集pl0文法)
 - [Copyright](#copyright)
 
 <!-- /TOC -->
@@ -159,6 +160,34 @@ end RESERVED 6 4
 	> [Lexical ERROR] [1,25] Invalid ID: "12a"
 - 赋值符号错误：
 	> [Lexical ERROR] [1,27] Missing "=" near the ":"
+
+## PASCAL语言子集（PL/0）文法
+
+```xml
+<prog> → program <id>; <block>
+<block> → [<condecl>][<vardecl>][<proc>]<body>
+<condecl> → const <const>{,<const>}; // 可以是一个集合
+<const> → <id>:=<integer> 
+<vardecl> → var <id>{,<id>};
+<proc> → procedure <id>（<id>{,<id>}）;<block>{;<proc>}
+<body> → begin <statement>{;<statement>}end
+<statement> → <id> := <exp>
+               |if <lexp> then <statement>[else <statement>]
+               |while <lexp> do <statement>
+               |call <id>[（<exp>{,<exp>}）]
+               |<body>
+               |read (<id>{，<id>})
+               |write (<exp>{,<exp>})
+<lexp> → <exp> <lop> <exp>|odd <exp>
+<exp> → [+|-]<term>{<aop><term>}
+<term> → <factor>{<mop><factor>}
+<factor>→<id>|<integer>|(<exp>)
+<lop> → =|<>|<|<=|>|>=
+<aop> → +|-
+<mop> → *|/
+<id> → l{l|d}   （注：l表示字母）
+<integer> → d{d}
+```
 
 ## Copyright
 
