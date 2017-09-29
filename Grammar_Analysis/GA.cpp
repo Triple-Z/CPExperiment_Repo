@@ -64,10 +64,10 @@ void ThrowError(int type){
     errorType++;
     switch(type){
         case 0:
-            cout << "[Grammar ERROR]" << " [" << unit.line << "," << unit.column << "] " << "Missing word \"program\"" << endl;
+            cout << "[Grammar ERROR] " << " [" << unit.line << "," << unit.column << "] " << "Missing word \"program\"" << endl;
             break;
         case 1:
-            cout << "[Grammar ERROR]" << " [" << unit.line << "," << unit.column << "] " << "Missing identifier after \"program\"" << endl;
+            cout << "[Grammar ERROR] " << " [" << unit.line << "," << unit.column << "] " << "Missing identifier after \"program\"" << endl;
             break;
         case 2:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing end character \";\"" << endl;
@@ -132,9 +132,51 @@ void ThrowError(int type){
         case 22:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing the compare operator" << endl;
             break;
+        case 23:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing parentheses" << endl;
+            break;
+        case 24:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Wrong factor" << endl;
+            break;
         default:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Unknown error" << endl;
             break;
+    }
+}
+
+void Exp();
+/**
+ * <factor>→<id>|<integer>|(<exp>)
+ */
+void Factor() {
+    if (unit.key == "ID" || *errorType == 24) {
+        if (unit.key != "ID" && unit.key != "INT" && unit.value == "(" && *errorType == 24) errorType++;
+        // End factor
+    } else if (unit.key == "INT") {
+        // End factor
+    } else if (unit.key == "SOP" && unit.value == "(") {
+        ReadLine();
+        Exp();
+        if (unit.key == "SOP" && unit.value == ")" || *errorType == 23) {
+            if (unit.value != ")" && *errorType == 23) errorType++;
+            // End factor
+        } else {
+            ThrowError(23);
+        }
+    } else {
+        ThrowError(24);
+    }
+}
+
+/**
+ * <term> → <factor>{<mop><factor>}
+ */
+void Term() {
+    Factor();
+    ReadLine();
+    if (unit.value == "*" || unit.value == "/") {
+        ReadLine();
+        Factor();
     }
 }
 
@@ -143,22 +185,15 @@ void ThrowError(int type){
  * <exp> → [+|-]<term>{<aop><term>}
  */
 void Exp() {
-
-}
-
-/**
- * <term> → <factor>{<mop><factor>}
- */
-void Term() {
-
-}
-
-
-/**
- * <factor>→<id>|<integer>|(<exp>)
- */
-void Factor() {
-
+    if (unit.value == "+" || unit.value == "-") {
+        ReadLine();
+        Term();
+        ReadLine();
+        if (unit.value == "+" || unit.value == "-") {
+            ReadLine();
+            Term();
+        }
+    }
 }
 
 /**
@@ -383,6 +418,8 @@ void Proc() {
                             ReadLine();
                             Proc();
                         }
+
+                        // End Proc
                     } else {
                         ThrowError(2);
                     }
@@ -533,6 +570,7 @@ void Block() {
 
     if (unit.value == "procedure" && unit.key == "RESERVED") {
         Proc();
+        ReadLine();
     } else if (unit.key == "ID" && *errorType != 8){
         ThrowError(8); // Cannot resolve type
         while(unit.key != "EOP" && unit.key != "RESERVED"){

@@ -1,5 +1,5 @@
 # Lexical Analysis Result
-# Generate Time: Fri Sep 29 21:11:06 2017
+# Generate Time: Fri Sep 29 21:48:15 2017
 # Program File Name: input
 # Language Set: PL/0
 
@@ -32,11 +32,9 @@ begin RESERVED 5 10
 er ID 6 11
 := AOP 6 13
 2 INT 6 14
-; EOP 6 15
 end RESERVED 7 8
 begin RESERVED 8 6
 aaa ID 9 8
 := AOP 9 10
 26 INT 9 12
-; EOP 9 13
 end RESERVED 10 4

@@ -3,8 +3,8 @@ progam hhh;
     vr hhh;
     procedure test(tt);
     begin
-        er:=2;
+        er:=2
     end
 begin
-    aaa:=26;
+    aaa:=26
 end
