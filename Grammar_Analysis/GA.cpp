@@ -129,18 +129,15 @@ void ThrowError(int type){
         case 21:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing parentheses in \"write\"" << endl;
             break;
+        case 22:
+            cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Missing the compare operator" << endl;
+            break;
         default:
             cout << "[Grammar ERROR] "<< " [" << unit.line << "," << unit.column << "] " <<"Unknown error" << endl;
             break;
     }
 }
 
-/**
- * <lexp> → <exp> <lop> <exp>|odd <exp>
- */
-void Lexp() {
-
-}
 
 /**
  * <exp> → [+|-]<term>{<aop><term>}
@@ -149,7 +146,6 @@ void Exp() {
 
 }
 
-
 /**
  * <term> → <factor>{<mop><factor>}
  */
@@ -157,10 +153,33 @@ void Term() {
 
 }
 
+
 /**
  * <factor>→<id>|<integer>|(<exp>)
  */
 void Factor() {
+
+}
+
+/**
+ * <lexp> → <exp> <lop> <exp>|odd <exp>
+ */
+void Lexp() {
+    ReadLine();
+    if (unit.value == "odd") {
+        ReadLine();
+        Exp();
+    } else {
+        Exp();
+        ReadLine();
+        if (unit.key == "COP" || *errorType == 22) {
+            if (unit.key != "COP" && *errorType == 22) errorType++;
+            ReadLine();
+            Exp();
+        } else {
+            ThrowError(22);
+        }
+    }
 
 }
 
@@ -206,9 +225,11 @@ void Statement() {
             if (*errorType == 17 && unit.key != "ID") errorType++;
             ReadLine();// Read more one line...
             if (unit.key == "SOP" && unit.value == "(") {
+                ReadLine();
                 Exp();
                 ReadLine();
                 while (unit.key == "SOP" && unit.value == ",") {
+                    ReadLine();
                     Exp();
                     ReadLine();
                 }
@@ -263,6 +284,7 @@ void Statement() {
         ReadLine();
         if (unit.key == "SOP" && unit.value == "(" || *errorType == 21) {
             if (*errorType == 21 && unit.value != "(") errorType++;
+            ReadLine();
             Exp();
             ReadLine();
             while (unit.key == "SOP" && unit.value == ",") {
@@ -285,7 +307,8 @@ void Statement() {
         ReadLine();
         if (unit.key == "AOP" && unit.value == ":=" || *errorType == 4) {
             if (*errorType == 4 && unit.value != ":=" ) errorType++;
-                Exp();
+            ReadLine();
+            Exp();
         } else {
             ThrowError(4);
         }
