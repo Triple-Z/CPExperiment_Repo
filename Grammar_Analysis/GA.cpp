@@ -254,8 +254,8 @@ void Statement() {
         ReadLine();
         Lexp();
         if (unit.key == "RESERVED" && unit.value == "do" || *errorType == 16) {
-            if (*errorType == 16 && unit.value != "do") errorType++;
-            ReadLine();
+            if (*errorType == 16 && unit.value != "do") errorType++; else ReadLine();
+//            ReadLine();
             Statement();
 //            ReadLine();
         } else {
@@ -374,9 +374,9 @@ void Body() {
             Statement();
         }
 //        if (unit.value == ";") ReadLine();
-        if (unit.key == "RESERVED" && unit.value == "end" || *errorType == 13) {
+        if (unit.key == "RESERVED" && unit.value == "end" || *errorType == 13 || error) {
             if (*errorType == 13 && unit.value != "end") errorType++;
-            ReadLine();
+            if (!error) ReadLine();
             // Over
         } else {
             ThrowError(13);
@@ -393,8 +393,8 @@ void Block();
  */
 void Proc() {
     if(unit.key == "ID" || *errorType == 9) {
-        if(*errorType == 9 && unit.key != "ID") errorType++;
-        ReadLine();
+        if(*errorType == 9 && unit.key != "ID") errorType++; else ReadLine();
+//        ReadLine();
         if (unit.key == "SOP" && unit.value == "(" || *errorType == 10){
             if (*errorType == 10 && unit.value != "(") errorType++;
             ReadLine();

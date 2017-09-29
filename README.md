@@ -6,6 +6,11 @@
 	- [Input](#input)
 	- [Output](#output)
 	- [Error Warning](#error-warning)
+		- [Keyword Error](#keyword-error)
+		- [Identifier Error](#identifier-error)
+		- [Type Error](#type-error)
+		- [Character Error](#character-error)
+		- [Unknown Error](#unknown-error)
 - [PASCAL语言子集（PL/0）词法分析器](#pascal语言子集pl0词法分析器)
 	- [Input](#input-1)
 	- [Output](#output-1)
@@ -47,14 +52,72 @@
 
 输出。
 
-语法分析结果文件 `ga_output`。
+字符流输出。
+
+输出样例：
+```
+[Lexical ERROR]  [2,12] Invalid ID: "3er"
+[Lexical ERROR]  [2,15] Missing "=" near the ":" ;
+[Grammar ERROR]  [1,5] Missing word "program"
+[Grammar ERROR]  [1,6] Missing identifier after "program"
+[Grammar ERROR]  [2,10] Missing end character ";"
+[Grammar ERROR]  [2,14] Cannot resolve type "3er"
+[Grammar ERROR]  [3,7] Cannot resolve type "va"
+[Grammar ERROR]  [7,22] Missing word "do"
+```
 
 ### Error Warning
 
 错误提示。
 
+#### Keyword Error
 
+关键字错误。
 
+|关键字|丢失|拼写错误|
+|:----:|:----:|:----:|
+|program|`supported`||
+|const||`supported`|
+|var||`supported`|
+|procedure||`supported`|
+|begin|`supported`||
+|if|||
+|then|`supported`||
+|while|||
+|do|`supported`||
+|call|||
+|read|||
+|write|||
+|end|`supported`||
+
+#### Identifier Error
+
+标识符错误。
+
+|区域|丢失|拼写错误|
+|:----:|:----:|:----:|
+|program||`supported`|
+|const||`supported`|
+|var||`supported`|
+|procedure|`supported`|`supported`|
+|read||`supported`|
+
+#### Type Error
+
+类型错误。
+
+|类型|拼写错误|
+|:----:|:----:|
+|const|`supported`|
+|var|`supported`|
+
+#### Character Error
+
+符号错误。
+
+#### Unknown Error
+
+未知错误。
 
 ## PASCAL语言子集（PL/0）词法分析器
 
@@ -120,7 +183,7 @@ end RESERVED 6 4
 
 关键字。
 
-`program` | `const` | `var` | `procedure` | `begin` | `if` | `then` | `while` | `call` | `read` | `write` | `end`
+`program` | `const` | `var` | `procedure` | `begin` | `if` | `then` | `while` | `call` | `read` | `write` | `end` | `do`
 
 ### COP(Compare Operators)
 

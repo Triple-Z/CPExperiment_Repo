@@ -1,12 +1,13 @@
-progam hhh;
+program hhh;
     const 3er:3, te:=a, tt:=3;
-    va hhh;
-    procedure test(ttt, eee);
+    var tt;
+    procedure (ttt, eee);
     const tt:= 34;
     begin
-        while c>=d do c:=c-1
+        while c>=d  c:=c-1
     end
 begin
+    read();
     if a>b then a:=3;
     aaa:=26
 end
