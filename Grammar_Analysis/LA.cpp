@@ -245,9 +245,9 @@ int LA() {
 //						cout << ":=, AOP" << endl;
                         laOutput << ":= AOP" << " " << line << " " << column << endl;
                     } else {
-                        cout << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
+                        cout << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\"" << endl;
                         laOutput << "^ := AOP " << line << " " << column << endl;
-                        laOutput << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\" ;" << endl;
+                        laOutput << "[Lexical ERROR] " << " [" << line << "," << column <<"] " << "Missing \"=\" near the \":\"" << endl;
                         Retract();
                     }
                     break;

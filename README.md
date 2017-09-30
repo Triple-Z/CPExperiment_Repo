@@ -35,13 +35,13 @@
 词法分析结果文件 `la_output`。
 
 > 注释格式：
-> ```makefile
+> ```
 > # 我是一条注释
 > 我不是注释
 > ```
 > 词法错误：
 > ```
-> ^ 错误的内容
+> ^ 错误内容
 > 错误输出
 > ```
 
@@ -76,7 +76,7 @@
 
 |关键字|丢失|拼写错误|
 |:----:|:----:|:----:|
-|program|`supported`||
+|program||`supported`|
 |const||`supported`|
 |var||`supported`|
 |procedure||`supported`|
@@ -96,11 +96,11 @@
 
 |区域|丢失|拼写错误|
 |:----:|:----:|:----:|
-|program||`supported`|
-|const||`supported`|
-|var||`supported`|
+|program|`supported`|`supported`|
+|const|`supported`|`supported`|
+|var|`supported`|`supported`|
 |procedure|`supported`|`supported`|
-|read||`supported`|
+|read|`supported`|`supported`|
 
 #### Type Error
 
@@ -114,6 +114,22 @@
 #### Character Error
 
 符号错误。
+
+|区域|符号|丢失|
+|:----:|:----:|:----:|
+|program|;|`supported`|
+|const|:=|`supported`|
+|	|,|`supported`|
+|	|;|`supported`|
+|var|,|`supported`|
+|	|;|`supported`|
+|procedure|(|`supported`|
+|	|)|`supported`|
+|	|;|`supported`|
+|read|(|`supported`|
+|	|)|`supported`|
+|write|(|`supported`|
+|	|)|`supported`|
 
 #### Unknown Error
 
@@ -145,7 +161,7 @@ end
 词法分析结果文件 `la_output`。
 
 输出样例：
-```makefile
+```
 # Lexical Analysis Result
 # Generate Time: Fri Sep 29 18:40:39 2017
 # Program File Name: input
@@ -183,13 +199,13 @@ end RESERVED 6 4
 
 关键字。
 
-`program` | `const` | `var` | `procedure` | `begin` | `if` | `then` | `while` | `call` | `read` | `write` | `end` | `do`
+`program` , `const` , `var` , `procedure` , `begin` , `if` , `then` , `while` | `call` , `read` , `write` , `end` , `do` .
 
 ### COP(Compare Operators)
 
 比较符。
 
-`=` | `<>` | `<` | `<=` | `>` | `>=`
+`=` , `<>` , `<` , `<=` , `>` , `>=`
 
 ### AOP(Assignment Operator)
 
@@ -201,7 +217,7 @@ end RESERVED 6 4
 
 操作符。
 
-`*` | `/` | `+` | `-`
+`*` , `/` , `+` , `-`
 
 ### EOP(End Operator)
 
@@ -213,7 +229,7 @@ end RESERVED 6 4
 
 分隔符。
 
-`(` | `)` | `,`
+`(` , `)` , `,`
 
 ### Error Warning
 
@@ -226,7 +242,7 @@ end RESERVED 6 4
 
 ## PASCAL语言子集（PL/0）文法
 
-```xml
+```
 <prog> → program <id>; <block>
 <block> → [<condecl>][<vardecl>][<proc>]<body>
 <condecl> → const <const>{,<const>}; // 可以是一个集合
