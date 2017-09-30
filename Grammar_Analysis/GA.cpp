@@ -67,8 +67,7 @@ void ThrowError(int type){
     error = true;
     *errorType = type;
     errorType++;
-    cout << endl;
-    cout << "[DEBUG] ERROR TYPE: " << type << endl;
+//    cout << endl << "[DEBUG] ERROR TYPE: " << type << endl;
     switch(type){
         case 0:
             cout << "[Grammar ERROR] " << " [" << unit.line << "," << unit.column << "] " << "Spell error \"program\"" << endl;
@@ -705,6 +704,7 @@ void CloseFile() {
  * Print the error stack out.
  */
 void PrintErrorStack() {
+    cout << "[DEBUG] Error Stack" << endl;
     cout << endl << "|<<<< ERROR STACK <<<<<" << endl;
     int *p;
     cout << "|";
@@ -730,6 +730,6 @@ int GA() {
         CloseFile();
     }
 
-    PrintErrorStack();
+//    PrintErrorStack();
     return 0;
 }

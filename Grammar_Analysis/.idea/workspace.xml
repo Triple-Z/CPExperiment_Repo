@@ -37,8 +37,8 @@
           <file leaf-file-name="GA.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/GA.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="531">
-                  <caret line="519" column="35" lean-forward="true" selection-start-line="519" selection-start-column="35" selection-end-line="519" selection-end-column="35" />
+                <state relative-caret-position="160">
+                  <caret line="705" column="24" lean-forward="true" selection-start-line="705" selection-start-column="24" selection-end-line="705" selection-end-column="24" />
                   <folding />
                 </state>
               </provider>
@@ -86,7 +86,7 @@
             <entry file="file://$PROJECT_DIR$/GA.cpp">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="-156">
-                  <caret line="135" column="7" lean-forward="true" selection-start-line="135" selection-start-column="7" selection-end-line="135" selection-end-column="7" />
+                  <caret line="134" column="7" lean-forward="true" selection-start-line="134" selection-start-column="7" selection-end-line="134" selection-end-column="7" />
                   <folding />
                 </state>
               </provider>
@@ -133,6 +133,7 @@
       <find>ThrowError(13)</find>
       <find>ThrowError(2)</find>
       <find>ThrowError(27)</find>
+      <find>DEBUG</find>
     </findStrings>
     <replaceStrings>
       <replace>value</replace>
@@ -242,12 +243,12 @@
       <updated>1506598036182</updated>
       <workItem from="1506598037934" duration="12242000" />
       <workItem from="1506612604810" duration="41570000" />
-      <workItem from="1506759518153" duration="15307000" />
+      <workItem from="1506759518153" duration="15730000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69119000" />
+    <option name="totallyTimeSpent" value="69542000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -260,7 +261,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.4957265" order="7" side_tool="false" content_ui="tabs" />
@@ -268,7 +268,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5117521" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32900432" sideWeight="0.48824787" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32900432" sideWeight="0.48824787" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -295,7 +295,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/GA.cpp</url>
-          <line>390</line>
+          <line>389</line>
           <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
@@ -519,8 +519,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GA.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="519" column="35" lean-forward="true" selection-start-line="519" selection-start-column="35" selection-end-line="519" selection-end-column="35" />
+        <state relative-caret-position="160">
+          <caret line="705" column="24" lean-forward="true" selection-start-line="705" selection-start-column="24" selection-end-line="705" selection-end-column="24" />
           <folding />
         </state>
       </provider>
