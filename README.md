@@ -199,7 +199,7 @@ end RESERVED 6 4
 
 关键字。
 
-`program` , `const` , `var` , `procedure` , `begin` , `if` , `then` , `while` | `call` , `read` , `write` , `end` , `do` .
+`program` , `const` , `var` , `procedure` , `begin` , `if` , `then` , `while` , `call` , `read` , `write` , `end` , `do` .
 
 ### COP(Compare Operators)
 
